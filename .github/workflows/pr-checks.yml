@@ -12,9 +12,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Install Rust
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
         with:
           toolchain: stable
           components: rustfmt
@@ -22,6 +24,8 @@ jobs:
 
       - name: Check formatting
         run: cargo fmt --all -- --check
+    permissions:
+      contents: read
 
   build-features:
     name: Build Feature - ${{ matrix.feature }}
@@ -90,9 +94,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Install Rust
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
         with:
           toolchain: stable
           components: clippy
@@ -123,17 +129,23 @@ jobs:
         env:
           RUSTFLAGS: "-D warnings"
         run: cargo build --no-default-features --features ${{ matrix.feature }},middleware --verbose
+    permissions:
+      contents: read
 
   openapi:
     name: OpenAPI schema regressions
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions-rs/toolchain@v1
+        with:
+          persist-credentials: false
+      - uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
         with:
           toolchain: stable
           override: true
       - run: cargo test -p async-openai --no-default-features --features openapi,chat-completion-types,completion-types --lib --test openapi
+    permissions:
+      contents: read
 
   tls-features:
     name: TLS Feature - ${{ matrix.feature }}
@@ -146,9 +158,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Install Rust
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
         with:
           toolchain: stable
           override: true
@@ -186,3 +200,5 @@ jobs:
             exit 1
           fi
           echo "OK: aws-lc-rs present in dependency tree"
+    permissions:
+      contents: read
