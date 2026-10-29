@@ -69,7 +69,7 @@ jobs:
           # credential left behind in the checkout.
           persist-credentials: false
       - name: Scan and push the report
-        uses: getplumber/plumber@ace0b096144d1f7af8290f4d63349a5a0cd5c889 # v0.7.14
+        uses: getplumber/plumber@e9ad2dc6d6faa2dfd84395aac18e461284062640 # v0.7.16
         with:
           platform: https://demo-github.getplumber.tech
           score-push: true
